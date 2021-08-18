@@ -1,3 +1,10 @@
+import {PluginListenerHandle} from "@capacitor/core";
+
 export interface CapFirebaseDynamicLinksPlugin {
-  echo(options: { value: string }): Promise<{ value: string }>;
+    addListener(eventName: 'onDynamicLink', listenerFunc: (data: DynamicLinkData) => void): PluginListenerHandle;
+}
+
+export interface DynamicLinkData {
+    url: string;
+    timestampClicked: number;
 }

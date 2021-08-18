@@ -1,22 +1,40 @@
 package com.cap.firebasedynamiclinks;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
+
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
-import com.getcapacitor.PluginCall;
-import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 
 @CapacitorPlugin(name = "CapFirebaseDynamicLinks")
 public class CapFirebaseDynamicLinksPlugin extends Plugin {
 
     private CapFirebaseDynamicLinks implementation = new CapFirebaseDynamicLinks();
 
-    @PluginMethod
-    public void echo(PluginCall call) {
-        String value = call.getString("value");
+    @Override
+    protected void handleOnNewIntent(Intent intent) {
+        super.handleOnNewIntent(intent);
 
-        JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));
-        call.resolve(ret);
+        FirebaseDynamicLinks
+                .getInstance()
+                .getDynamicLink(intent)
+                .addOnSuccessListener(pendingDynamicLinkData -> {
+                    if (pendingDynamicLinkData == null) {
+                        return;
+                    }
+                    Uri link = pendingDynamicLinkData.getLink();
+                    if (link == null) {
+                        return;
+                    }
+                    JSObject obj = new JSObject()
+                            .put("url", link.toString())
+                            .put("timestampClicked", pendingDynamicLinkData.getClickTimestamp());
+                    notifyListeners("onDynamicLink", obj, true);
+                })
+                .addOnFailureListener(failure -> Log.e("Dynamic Link failure", failure.getMessage()));
+
     }
 }
