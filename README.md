@@ -1,6 +1,14 @@
 # cap-firebase-dynamic-links
 
-Capacitor plugin for firebase dynamic links
+Capacitor plugin for Firebase Dynamic Links
+* For iOS configuration:
+  * make sure Associated Domains Capability in Xcode is configured properly,
+  * for iOS configuration docs: 
+  * https://firebase.google.com/docs/dynamic-links/ios/receive#open-dynamic-links-in-your-app
+  * read step 1, 2 or 3 if u have custom domain, the other steps are unnecessary.
+* for Android configuration: nothing.
+* **
+
 
 ## Install
 
