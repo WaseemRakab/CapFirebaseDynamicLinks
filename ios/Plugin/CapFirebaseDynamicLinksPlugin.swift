@@ -39,8 +39,7 @@ public class CapFirebaseDynamicLinksPlugin: CAPPlugin {
                             let dynamicLink = result!
                             
                             let url = dynamicLink.url?.absoluteString ?? ""
-                            let timeStamp = NSDate().timeIntervalSince1970
-                            self.notifyListeners("onDynamicLink", data: ["url": url,"timestampClicked": timeStamp],
+                            self.notifyListeners("onDynamicLink", data: ["url": url,"timestampClicked": ""],
                                                  retainUntilConsumed: true)
         })
     }
@@ -55,10 +54,8 @@ public class CapFirebaseDynamicLinksPlugin: CAPPlugin {
                     return
                 }
                 let dynamicLink = result!
-                
                 let url = dynamicLink.url?.absoluteString ?? ""
-                let timeStamp = NSDate().timeIntervalSince1970
-                self.notifyListeners("onDynamicLink", data: ["url": url,"timestampClicked": timeStamp],
+                self.notifyListeners("onDynamicLink", data: ["url": url,"timestampClicked": ""],
                                      retainUntilConsumed: true)
             })
     }
