@@ -29,19 +29,14 @@ public class CapFirebaseDynamicLinksPlugin: CAPPlugin {
         guard let object = notification.object as? [String:Any?] else {
             return
         }
-        let url = object["url"] as! URL
-        DynamicLinks.dynamicLinks()
-            .dynamicLink(fromUniversalLink: url,
-                         completion: {(result, error) in
-                            if(result == nil) {
-                                return
-                            }
-                            let dynamicLink = result!
-                            
-                            let url = dynamicLink.url?.absoluteString ?? ""
-                            self.notifyListeners("onDynamicLink", data: ["url": url,"timestampClicked": ""],
-                                                 retainUntilConsumed: true)
-        })
+        let objUrl = object["url"] as! URL
+        guard let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: objUrl) else {
+            return
+        }
+        let url = dynamicLink.url?.absoluteString ?? ""
+        self.notifyListeners("onDynamicLink", data: ["url": url,"timestampClicked": ""],
+                             retainUntilConsumed: true)
+        }
     }
     
     @objc public func handleUniversalLink(notification: NSNotification) {
