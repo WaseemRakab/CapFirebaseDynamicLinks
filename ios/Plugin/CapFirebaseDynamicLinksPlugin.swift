@@ -37,7 +37,6 @@ public class CapFirebaseDynamicLinksPlugin: CAPPlugin {
         self.notifyListeners("onDynamicLink", data: ["url": url,"timestampClicked": ""],
                              retainUntilConsumed: true)
         }
-    }
     
     @objc public func handleUniversalLink(notification: NSNotification) {
         guard let object = notification.object as? [String:Any?] else {
